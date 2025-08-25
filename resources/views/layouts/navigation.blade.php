@@ -1,100 +1,121 @@
-<nav x-data="{ open: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
-    <!-- Primary Navigation Menu -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Navbar + Sidebar</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body class="bg-gray-100 dark:bg-gray-900">
+
+  <!-- Navbar -->
+  <nav class="bg-white dark:bg-gray-800 shadow-md fixed w-full z-10">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16">
-            <div class="flex">
-                <!-- Logo -->
-                <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
-                    </a>
-                </div>
+      <div class="flex justify-between h-16">
+        
+        <!-- Left section -->
+        <div class="flex items-center">
+          <!-- Sidebar toggle button -->
+          <button id="sidebarToggle" class="p-2 rounded-md text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+            <span class="material-icons">menu</span>
+          </button>
 
-                <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
-                    </x-nav-link>
-                </div>
-            </div>
+          <!-- Logo -->
+          <a href="#" class="ml-4 text-xl font-bold text-gray-800 dark:text-gray-200">MyApp</a>
 
-            <!-- Settings Dropdown -->
-            <div class="hidden sm:flex sm:items-center sm:ms-6">
-                <x-dropdown align="right" width="48">
-                    <x-slot name="trigger">
-                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
-                            <div>{{ Auth::user()->name }}</div>
-
-                            <div class="ms-1">
-                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                </svg>
-                            </div>
-                        </button>
-                    </x-slot>
-
-                    <x-slot name="content">
-                        <x-dropdown-link :href="route('profile.edit')">
-                            {{ __('Profile') }}
-                        </x-dropdown-link>
-
-                        <!-- Authentication -->
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-
-                            <x-dropdown-link :href="route('logout')"
-                                    onclick="event.preventDefault();
-                                                this.closest('form').submit();">
-                                {{ __('Log Out') }}
-                            </x-dropdown-link>
-                        </form>
-                    </x-slot>
-                </x-dropdown>
-            </div>
-
-            <!-- Hamburger -->
-            <div class="-me-2 flex items-center sm:hidden">
-                <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-900 focus:text-gray-500 dark:focus:text-gray-400 transition duration-150 ease-in-out">
-                    <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                        <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                        <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
-            </div>
+          <!-- Nav Links -->
+          <div class="hidden sm:flex sm:space-x-6 sm:ml-10">
+            <a href="#" class="text-gray-600 dark:text-gray-300 hover:text-indigo-500">Dashboard</a>
+            <a href="#" class="text-gray-600 dark:text-gray-300 hover:text-indigo-500">Projects</a>
+            <a href="#" class="text-gray-600 dark:text-gray-300 hover:text-indigo-500">Reports</a>
+          </div>
         </div>
+
+        <!-- Right section -->
+        <div class="flex items-center">
+          <!-- Notifications -->
+          <button class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300">
+            <span class="material-icons">notifications</span>
+          </button>
+
+          <!-- Profile Dropdown -->
+          <div class="relative ml-3">
+            <button id="profileMenuBtn" class="flex items-center text-sm rounded-full focus:outline-none">
+              <img class="h-8 w-8 rounded-full" src="https://i.pravatar.cc/40" alt="User">
+              <span class="ml-2 text-gray-600 dark:text-gray-300">John Doe</span>
+              <span class="material-icons ml-1 text-gray-500">expand_more</span>
+            </button>
+
+            <div id="profileMenu" class="hidden absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg py-2">
+              <a href="#" class="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">Profile</a>
+              <a href="#" class="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">Settings</a>
+              <hr class="border-gray-200 dark:border-gray-700">
+              <a href="#" class="block px-4 py-2 text-red-600 hover:bg-gray-100 dark:hover:bg-gray-700">Log Out</a>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+  </nav>
 
-    <!-- Responsive Navigation Menu -->
-    <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
-        <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
-            </x-responsive-nav-link>
-        </div>
-
-        <!-- Responsive Settings Options -->
-        <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
-            <div class="px-4">
-                <div class="font-medium text-base text-gray-800 dark:text-gray-200">{{ Auth::user()->name }}</div>
-                <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
-            </div>
-
-            <div class="mt-3 space-y-1">
-                <x-responsive-nav-link :href="route('profile.edit')">
-                    {{ __('Profile') }}
-                </x-responsive-nav-link>
-
-                <!-- Authentication -->
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-
-                    <x-responsive-nav-link :href="route('logout')"
-                            onclick="event.preventDefault();
-                                        this.closest('form').submit();">
-                        {{ __('Log Out') }}
-                    </x-responsive-nav-link>
-                </form>
-            </div>
-        </div>
+  <!-- Sidebar -->
+  <div id="sidebar" class="fixed top-0 left-0 h-full w-64 bg-white dark:bg-gray-800 shadow-lg transform -translate-x-full transition-transform duration-300 z-20">
+    <div class="flex items-center justify-between px-4 h-16 border-b border-gray-200 dark:border-gray-700">
+      <h1 class="text-lg font-semibold text-gray-800 dark:text-gray-200">Menu</h1>
+      <button id="closeSidebar" class="p-1 text-gray-600 dark:text-gray-300">
+        <span class="material-icons">close</span>
+      </button>
     </div>
-</nav>
+    <nav class="mt-4 space-y-2">
+      <a href="#" class="flex items-center px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-indigo-500 hover:text-white rounded-md">
+        <span class="material-icons mr-3">dashboard</span> Dashboard
+      </a>
+      <a href="#" class="flex items-center px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-indigo-500 hover:text-white rounded-md">
+        <span class="material-icons mr-3">folder</span> Projects
+      </a>
+      <a href="#" class="flex items-center px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-indigo-500 hover:text-white rounded-md">
+        <span class="material-icons mr-3">bar_chart</span> Reports
+      </a>
+      <a href="#" class="flex items-center px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-indigo-500 hover:text-white rounded-md">
+        <span class="material-icons mr-3">settings</span> Settings
+      </a>
+    </nav>
+  </div>
+
+  <!-- Page Content -->
+  <div class="pt-20 px-6">
+    <h1 class="text-3xl font-bold text-gray-800 dark:text-gray-200">Welcome to Dashboard</h1>
+    <p class="mt-2 text-gray-600 dark:text-gray-400">Here’s your main content area. Resize the window or toggle the sidebar to see the responsive behavior.</p>
+  </div>
+
+  <script>
+    // Sidebar toggle
+    const sidebar = document.getElementById('sidebar');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const closeSidebar = document.getElementById('closeSidebar');
+
+    sidebarToggle.addEventListener('click', () => {
+      sidebar.classList.toggle('-translate-x-full');
+    });
+    closeSidebar.addEventListener('click', () => {
+      sidebar.classList.add('-translate-x-full');
+    });
+
+    // Profile dropdown
+    const profileMenuBtn = document.getElementById('profileMenuBtn');
+    const profileMenu = document.getElementById('profileMenu');
+
+    profileMenuBtn.addEventListener('click', () => {
+      profileMenu.classList.toggle('hidden');
+    });
+
+    // Close dropdown on outside click
+    window.addEventListener('click', (e) => {
+      if (!profileMenuBtn.contains(e.target) && !profileMenu.contains(e.target)) {
+        profileMenu.classList.add('hidden');
+      }
+    });
+  </script>
+</body>
+</html>
