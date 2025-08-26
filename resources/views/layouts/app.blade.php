@@ -29,14 +29,20 @@
           <div class="relative ml-3">
             <button id="profileMenuBtn" class="flex items-center text-sm rounded-full focus:outline-none">
               <img class="h-8 w-8 rounded-full" src="https://i.pravatar.cc/40" alt="User">
-              <span class="ml-2 text-gray-600 dark:text-gray-300">John Doe</span>
+              <span class="ml-2 text-gray-600 dark:text-gray-300">{{ Auth::check() ? Auth::user()->name : 'Guest' }}</span>
               <span class="material-icons ml-1 text-gray-500">expand_more</span>
             </button>
             <div id="profileMenu" class="hidden absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg py-2">
               <a href="#" class="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">Profile</a>
               <a href="#" class="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">Settings</a>
               <hr class="border-gray-200 dark:border-gray-700">
-              <a href="#" class="block px-4 py-2 text-red-600 hover:bg-gray-100 dark:hover:bg-gray-700">Log Out</a>
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit" 
+                    class="block w-full text-left px-4 py-2 text-red-600 hover:bg-gray-100 dark:hover:bg-gray-700">
+                    Log Out
+                </button>
+            </form>
             </div>
           </div>
         </div>
@@ -55,12 +61,38 @@
     </button>
   </div>
   <nav class="mt-4 space-y-2">
-    <a href="#" class="menu-link flex items-center px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-indigo-500 hover:text-white rounded-md active">
-      <span class="material-icons mr-3">dashboard</span> Dashboard
-    </a>
-   <a href="" class="menu-link flex items-center px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-indigo-500 hover:text-white rounded-md">
+ <!-- Dashboard -->
+<a href="{{ route('dashboard') }}"
+   class="menu-link flex items-center px-4 py-2 rounded-md 
+   {{ request()->routeIs('dashboard') ? 'bg-indigo-500 text-white' : 'text-gray-700 dark:text-gray-300 hover:bg-indigo-500 hover:text-white' }}">
+  <span class="material-icons mr-3">dashboard</span> Dashboard
+</a>
+
+<!-- Whatsapp Contacts -->
+<a href="{{ route('persons.index') }}"
+   class="menu-link flex items-center px-4 py-2 rounded-md 
+   {{ request()->routeIs('persons.index') ? 'bg-indigo-500 text-white' : 'text-gray-700 dark:text-gray-300 hover:bg-indigo-500 hover:text-white' }}">
   <span class="material-icons mr-3">chat</span>
   Whatsapp Contacts
+</a>
+
+
+
+<!-- Whatsapp Contacts -->
+<a href="{{ route('whatsapp.create') }}"
+   class="menu-link flex items-center px-4 py-2 rounded-md 
+   {{ request()->routeIs('whatsapp.create') ? 'bg-indigo-500 text-white' : 'text-gray-700 dark:text-gray-300 hover:bg-indigo-500 hover:text-white' }}">
+  <span class="material-icons mr-3">campaign</span>
+  Whatsapp Broadcast
+</a>
+
+
+<!-- Whatsapp Contacts -->
+<a href="{{ route('whatsapp.index') }}"
+   class="menu-link flex items-center px-4 py-2 rounded-md 
+   {{ request()->routeIs('whatsapp.index') ? 'bg-indigo-500 text-white' : 'text-gray-700 dark:text-gray-300 hover:bg-indigo-500 hover:text-white' }}">
+  <span class="material-icons mr-3">chat</span>
+  Whatsapp History
 </a>
   </nav>
 </aside>
